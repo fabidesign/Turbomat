@@ -16,11 +16,12 @@ P5ireBase fire;
 Movie beerVideo;
 
 void setup() {
+  frameRate(30);
   size(1920, 1080);
   //fullScreen();
   fire = new P5ireBase(this, "https://turbomat-6f94f.firebaseio.com/");//put here ur DB link created in firebase console
   
-  beerVideo = new Movie(this, "beerlarge.mp4");
+  beerVideo = new Movie(this, "BEERS_Black.mp4");
   beerVideo.loop();
   
   thread("requestData");
@@ -30,14 +31,6 @@ void draw() {
   image(beerVideo, 0, 0);
   
   if(frameCount == 200){
-    thread("newBeer");
-  }
-  
-  if(frameCount == 800){
-    thread("newUser");
-  }
-  
-  if(frameCount == 1000){
     thread("newBeer");
   }
 }
@@ -79,12 +72,3 @@ void requestData(){
   totalQNaturCount = Integer.valueOf(fire.getValue("beers/Q-Natur/totalQNaturCount"));
   println("Q-Natur: " + totalQNaturCount);
 }
-
-/*
-void newBeer(){
-    int beersCount = int(fire.getValue( "users/" + randomID +"/beersCount"));
-    beersCount++;
-    fire.setValue( "users/" + randomID +"/beersCount", str(beersCount));
-    println(randomID + "drunk" + beersCount);
-}
-*/
