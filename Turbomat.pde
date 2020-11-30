@@ -1,6 +1,11 @@
 import P5ireBase.library.*;
 import processing.video.*;
 
+PFont Display;
+PFont DegularLight;
+PFont DegularRegular;
+PFont DegularBold;
+
 boolean addedValue = false;
 int totalBeerCount = 0;
 int totalUserCount = 0;
@@ -18,24 +23,59 @@ Movie beerVideo;
 void setup() {
   frameRate(30);
   size(1920, 1080);
+  pixelDensity(displayDensity());
+  
   //fullScreen();
   fire = new P5ireBase(this, "https://turbomat-6f94f.firebaseio.com/");//put here ur DB link created in firebase console
   
-  beerVideo = new Movie(this, "BEERS_Black.mp4");
+  Display = createFont("Degular_Display-Black.ttf", 1000);
+  DegularLight = createFont("Degular_Text-Light.ttf", 500);
+  DegularRegular = createFont("Degular_Text-Regular.ttf", 500);
+  DegularBold = createFont("Degular_Text-Bold.ttf", 500);
+  textFont(DegularRegular);
+  
+  beerVideo = new Movie(this, "beerbrown.mp4");
   beerVideo.loop();
   
   thread("requestData");
+  
+  background(255,255,255);
 }
 
 void draw() {
+  //scale(0.67);
   image(beerVideo, 0, 0);
+  menu();
   
+  /*
   if(frameCount == 200){
     thread("newBeer");
   }
+  */
 }
+
+void Button(String name, String goal, String state){
+  if(state == "active"){
+    pushStyle();
+      fill(255,255,255,128);
+      noStroke();
+      rect(64,128,50,50,64);
+    popStyle();
+    pushStyle();
+      fill(22,29,71);
+      textFont(DegularBold);
+      textSize(36);
+      text(name,50,50);
+    popStyle();
+  }
+}
+
 void movieEvent(Movie m) {
   m.read();
+}
+
+void menu(){
+  Button("DRINKS", "x", "active");
 }
 
 void newBeer(){
